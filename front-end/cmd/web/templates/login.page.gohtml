@@ -1,0 +1,87 @@
+{{template "base" .}}
+
+{{define "content" }}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1 class="mt-5">Test microservices</h1>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form action="">
+                    <!-- Headings for the form -->
+                    <div class="headingsContainer">
+                        <h3>Sign in</h3>
+                        <p>Sign in with your username and password</p>
+                    </div>
+
+                    <!-- Main container for all inputs -->
+                    <div class="mainContainer">
+                        <!-- Username -->
+                        <label for="username" class="form-label">Your Email</label>
+                        <input type="text" placeholder="Enter Your Email" name="username" required class="form-control"> 
+                        <br><br>
+
+                        <!-- Password -->
+                        <label for="pswrd" class="form-label">Your password</label>
+                        <input type="password" placeholder="Enter Password" name="pswrd" required class="form-control">
+                        <br>
+
+                        <!-- Submit button -->
+                        <button type="submit" id="submit" class="btn btn-primary">Login</button>
+
+                        <!-- Sign up link 
+                        <p class="register">Not a member?  <a href="#">Register here!</a></p> -->
+                    </div>
+                </form>    
+            </div>
+        </div>
+    </div>
+{{end}}
+
+{{define "js"}}
+    <script>
+        let submit = document.getElementById("submit");
+
+        
+        submit.addEventListener("click",function(){
+            
+            const payload ={
+                action:"mail",
+                mail:{
+                    from:"me@example.com",  
+                    to:"you@there.com", 
+                    subject:"Test Email", 
+                    message:"Hello World!", 
+                }
+            }
+
+            const headers = new Headers();
+            headers.append("Content-Type","application/json");
+
+            const body ={
+                method:"POST",
+                body: JSON.stringify(payload),
+                headers: headers,
+            }
+
+            fetch({{print .BrokerURL "/handle"}},body)
+                .then((response) => response.json())
+                .then((data) => {
+                    sent.innerHTML = JSON.stringify(payload,undefined,4);
+                    received.innerHTML = JSON.stringify(data,undefined,4);
+                    if (data.error){
+                        output.innerHTML += `<br><strong>Error:</strong> ${data.message}`;
+                    }else{
+                        output.innerHTML += `<br><strong>Response from broker service:</strong> ${data.message}`;
+                    }
+                })
+                .catch((error) => {
+                    output.innerHTML += "<br><br>Error: "+ error;
+                })
+        })
+
+    </script>
+{{end}}

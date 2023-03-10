@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+
+  backend-service:
+    build:
+      context: backend-service
+      dockerfile: backend-service.dockerfile
+    restart: always
+    ports:
+      - "8080:80"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "host=postgres port=5432 user=postgres password=password dbname=postcreation sslmode=disable timezone=UTC connect_timeout=5"
+
+  postgres:
+    image: 'postgres:15.2'
+    ports:
+      - "5432:5432"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postcreation
