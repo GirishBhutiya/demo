@@ -122,3 +122,28 @@ func (app *Config) CreateUser(w http.ResponseWriter, r *http.Request) {
 	app.writeJSON(w, http.StatusAccepted, res)
 
 }
+func (app *Config) GetAllPost(w http.ResponseWriter, r *http.Request) {
+
+	var requestPayload struct {
+		AccessToken string `json:"access_token"`
+	}
+	err := app.readJSON(w, r, &requestPayload)
+	if err != nil {
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	_, err = app.tokenMaker.VerifyToken(requestPayload.AccessToken)
+	if err != nil {
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+	posts, err := app.Repo.GetAllPost()
+	if err != nil {
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	app.writeJSON(w, http.StatusAccepted, posts)
+
+}

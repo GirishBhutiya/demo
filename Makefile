@@ -26,7 +26,7 @@ down:
 ## build_backend: builds the backend binary as a linux executable
 build_backend:
 	@echo Building backend binary...
-	cd backend-service && set GOOS=linux&& set GOARCH=amd64&& set CGO_ENABLED=0 && go build -o ${BACK_END_BINARY} ./cmd/api
+	cd backend-service && set GOOS=linux && set GOARCH=amd64 && set CGO_ENABLED=0 && go build -o ${BACK_END_BINARY} ./cmd/api
 	@echo Done!
 
 

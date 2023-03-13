@@ -15,6 +15,40 @@ func NewPostgresTestRepository(db *sql.DB) *PostgresTestRepository {
 		Conn: db,
 	}
 }
+func (u *PostgresTestRepository) GetAllPost() ([]*Post, error) {
+	posts := []*Post{}
+
+	return posts, nil
+}
+func (u *PostgresTestRepository) GetOnePost(id int) (*Post, error) {
+	post := Post{
+		ID:        1,
+		Title:     "First Post",
+		Content:   "<p>First post content</p>",
+		UserId:    1,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	return &post, nil
+}
+func (u *PostgresTestRepository) DeletePost(pst Post) error {
+
+	return nil
+}
+func (u *PostgresTestRepository) InsertPost(pst Post) (Post, error) {
+
+	post := Post{
+		ID:        1,
+		Title:     "First Post",
+		Content:   "<p>First post content</p>",
+		UserId:    1,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	return post, nil
+}
 
 // GetAll returns a slice of all users, sorted by last name
 func (u *PostgresTestRepository) GetAll() ([]*User, error) {
